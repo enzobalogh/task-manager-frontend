@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="title">
+        <h1>TASK MANAGER</h1>
+    </div>
+    <section>
+        <h2>Criar Tarefa</h2>
+        <form id="taskForm">
+            <input type="text" id="titulo" placeholder="Título" required>
+            <input type="text" id="descricao" placeholder="Descrição" required>
+
+            <select id="status">
+                <option value="PENDENTE">Pendente</option>
+                <option value="EM_ANDAMENTO">Em andamento</option>
+                <option value="CONCLUIDA">Concluída</option>
+            </select>
+            <button type="submit">Criar</button>
+        </form>
+    </section>
+    <section>
+        <h2>Lista de Tarefas</h2>
+
+        <div id="taskList">
+            <!--TAREFAS SERÃO GERADAS AQUI PELO JS-->
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
