@@ -25,7 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function carregarTarefas() {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}/tasks`);
+        if (!response.ok) {
+            console.error("Erro ao buscar tarefas:", response.status);
+            return;
+        }
+
         const tarefas = await response.json();
 
         const lista = document.getElementById("taskList");
@@ -36,7 +41,7 @@ async function carregarTarefas() {
             div.classList.add("task-item");
 
             const titulo = document.createElement("p");
-            titulo.innerHTML = `<strong>${task.title}</strong>`
+            titulo.innerHTML = `<strong>${task.title}</strong>`;
             titulo.classList.add("task-title");
 
             const descricao = document.createElement("p");
@@ -48,12 +53,12 @@ async function carregarTarefas() {
             status.classList.add("task-status");
 
             if (task.status === "PENDENTE") {
-                status.classList.add("status-pendente")
+                status.classList.add("status-pendente");
             } else if (task.status === "EM_ANDAMENTO") {
-                status.classList.add("status-andamento")
+                status.classList.add("status-andamento");
                 status.textContent = "EM ANDAMENTO";
-            } else if(task.status === "CONCLUIDA") {
-                status.classList.add("status-concluida")
+            } else if (task.status === "CONCLUIDA") {
+                status.classList.add("status-concluida");
             }
 
             const data = document.createElement("p");
@@ -68,36 +73,28 @@ async function carregarTarefas() {
 
             const buttonComecar = document.createElement("button");
             if (task.status === "PENDENTE") {
-                buttonComecar.textContent = task.status === "PENDENTE" ? "Começar" : "Concluir";
-                
+                buttonComecar.textContent = "Começar";
             }
-
-
-
 
             buttonDelete.addEventListener("click", () => {
                 deletarTarefa(task.id);
-                console.log(task.id);
-            })
-
-
+            });
 
             buttonComplete.addEventListener("click", () => {
                 completarTarefa(task);
-            })
+            });
 
-            buttonComecar.addEventListener("click", ()=>{
+            buttonComecar.addEventListener("click", () => {
                 comecarTarefa(task);
-            } )
+            });
 
             div.appendChild(titulo);
             div.appendChild(descricao);
             div.appendChild(status);
-            div.appendChild(data)
+            div.appendChild(data);
             div.appendChild(buttonDelete);
             div.appendChild(buttonComplete);
             div.appendChild(buttonComecar);
-
 
             lista.appendChild(div);
         });
@@ -109,8 +106,6 @@ async function carregarTarefas() {
 
 async function criarTarefa(task) {
     try {
-        console.log("CLICOU");
-
         await fetch(`${API_URL}/tasks`, {
             method: "POST",
             headers: {
@@ -118,7 +113,6 @@ async function criarTarefa(task) {
             },
             body: JSON.stringify(task)
         });
-
     } catch (error) {
         console.error("Erro ao criar tarefa:", error);
     }
@@ -126,7 +120,7 @@ async function criarTarefa(task) {
 
 async function deletarTarefa(id) {
     try {
-        await fetch(`${API_URL}/${id}`, {
+        await fetch(`${API_URL}/tasks/${id}`, {
             method: "DELETE"
         });
 
@@ -140,7 +134,7 @@ async function completarTarefa(task) {
     try {
         const novoStatus = task.status === "CONCLUIDA" ? "PENDENTE" : "CONCLUIDA";
 
-        const response = await fetch(`${API_URL}/${task.id}`, {
+        const response = await fetch(`${API_URL}/tasks/${task.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -151,22 +145,23 @@ async function completarTarefa(task) {
                 status: novoStatus
             })
         });
+
         if (!response.ok) {
-            console.log("Erro ao atualizar tarefa: ", response.status);
+            console.log("Erro ao atualizar tarefa:", response.status);
             return;
         }
+
         carregarTarefas();
     } catch (error) {
-        console.error("Erro ao completar a tarefa: ", error);
+        console.error("Erro ao completar a tarefa:", error);
     }
-
 }
 
-    async function comecarTarefa(task) {
+async function comecarTarefa(task) {
     try {
         const novoStatus = task.status === "PENDENTE" ? "EM_ANDAMENTO" : "CONCLUIDA";
 
-        const response = await fetch(`${API_URL}/${task.id}`, {
+        const response = await fetch(`${API_URL}/tasks/${task.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -177,37 +172,14 @@ async function completarTarefa(task) {
                 status: novoStatus
             })
         });
+
         if (!response.ok) {
-            console.log("Erro ao atualizar tarefa: ", response.status);
+            console.log("Erro ao atualizar tarefa:", response.status);
             return;
         }
+
         carregarTarefas();
     } catch (error) {
-        console.error("Erro ao completar a tarefa: ", error);
+        console.error("Erro ao completar a tarefa:", error);
     }
-
 }
-/*async function desmarcarTarefa(task){
-    try {
-        const novoStatus = task.status === "PENDENTE" ? "CONCLUIDA" : "PENDENTE";
-
-        const response = await fetch(`${API_URL}/${task.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title: task.title,
-                description: task.description,
-                status: novoStatus
-            })
-        });
-        if (!response.ok) {
-            console.log("Erro ao atualizar tarefa: ", response.status);
-            return;
-        }
-        carregarTarefas();
-    } catch (error) {
-        console.error("Erro ao completar a tarefa: ", error);
-    }
-}*/
