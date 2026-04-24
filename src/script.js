@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/tasks";
+const API_URL = "https://task-manager-backend-77ro.onrender.com";
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarTarefas();
