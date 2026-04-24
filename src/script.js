@@ -23,6 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+function mostrarFeedback(mensagem, tipo){
+    const feedback = document.getElementById("feedback");
+
+    feedback.textContent = mensagem;
+    feedback.className = "";
+
+    feedback.classList.add(tipo);
+
+    setTimeout(() => {
+        feedback.classList.add("hidden");
+    }, 3000); //3 seg
+}
+
 async function carregarTarefas() {
     try {
         const response = await fetch(`${API_URL}/tasks`);
@@ -113,8 +126,13 @@ async function criarTarefa(task) {
             },
             body: JSON.stringify(task)
         });
+
+        if(!response.ok){
+            throw new Error("Erro ao criar tarefa.")
+        }
+        mostrarFeedback("Tarefa criada com SUCESSO!", "sucess")
     } catch (error) {
-        console.error("Erro ao criar tarefa:", error);
+        mostrarFeedback("Erro ao criar tarefa:", error);
     }
 }
 

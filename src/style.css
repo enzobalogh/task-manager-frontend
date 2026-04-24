@@ -157,3 +157,29 @@ button[type="submit"]:active {
     background-color: #d1fae5;
     color: #065f46;
 }
+
+#feedback {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+}
+
+.success {
+  background-color: green;
+}
+
+.error {
+  background-color: red;
+}
+
+.loading {
+  background-color: orange;
+}
+
+.hidden {
+  display: none;
+}
