@@ -109,13 +109,16 @@ async function carregarTarefas() {
 
 async function criarTarefa(task) {
     try {
-        await fetch(API_URL, {
+        console.log("CLICOU");
+
+        await fetch(`${API_URL}/tarefas`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(task)
         });
+
     } catch (error) {
         console.error("Erro ao criar tarefa:", error);
     }
