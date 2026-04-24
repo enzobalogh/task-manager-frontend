@@ -26,10 +26,14 @@ document.addEventListener("DOMContentLoaded", () => {
 function mostrarFeedback(mensagem, tipo){
     const feedback = document.getElementById("feedback");
 
+     if (!feedback) {
+        console.error("Elemento #feedback não encontrado");
+        return;
+    }
     feedback.textContent = mensagem;
     feedback.className = "";
-
     feedback.classList.add(tipo);
+    feedback.classList.remove("hidden");
 
     setTimeout(() => {
         feedback.classList.add("hidden");
@@ -119,7 +123,7 @@ async function carregarTarefas() {
 
 async function criarTarefa(task) {
     try {
-        await fetch(`${API_URL}/tasks`, {
+        const response = await fetch(`${API_URL}/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -130,9 +134,9 @@ async function criarTarefa(task) {
         if(!response.ok){
             throw new Error("Erro ao criar tarefa.")
         }
-        mostrarFeedback("Tarefa criada com SUCESSO!", "sucess")
+        mostrarFeedback("Tarefa criada com SUCESSO!", "success")
     } catch (error) {
-        mostrarFeedback("Erro ao criar tarefa:", error);
+        mostrarFeedback("Erro ao criar tarefa:", "error");
     }
 }
 
