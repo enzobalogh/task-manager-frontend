@@ -111,7 +111,7 @@ async function criarTarefa(task) {
     try {
         console.log("CLICOU");
 
-        await fetch(`${API_URL}/tarefas`, {
+        await fetch(`${API_URL}/tasks`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
